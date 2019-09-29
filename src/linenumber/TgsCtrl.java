@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,10 +33,15 @@ public class TgsCtrl {
     private List<Integer> list = new ArrayList<>();
     
     public TgsCtrl (LineNumberTugas view){
+        this.view = view;
         this.view.getjButton1().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                proses();
+                try {
+                    proses();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(TgsCtrl.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         this.view.getSaveBut().addActionListener(new ActionListener() {
@@ -47,9 +53,10 @@ public class TgsCtrl {
         
     }
     
-    private void proses() {
+    private void proses() throws FileNotFoundException {
         JFileChooser loadFile = view.getLoadFile();
         StyledDocument doc = view.getjTextPane1().getStyledDocument();
+//        LineNumberReader lineNumberReader = new LineNumberReader(new FileReader(view.getName()));
         if (JFileChooser.APPROVE_OPTION == loadFile.showOpenDialog(view)) {
             BufferedReader reader = null;
             try {
@@ -71,7 +78,7 @@ public class TgsCtrl {
                 if (reader != null) {
                     try {
                         reader.close();
-                        JOptionPane.showMessageDialog(null, "Load File Success.", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Jumlah line ", "Informasi", JOptionPane.INFORMATION_MESSAGE);
 
                     } catch (IOException ex) {
                         Logger.getLogger(TgsCtrl.class
